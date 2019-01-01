@@ -12,20 +12,27 @@ cmake --build . --target ALL_BUILD --config Release -- /p:CharacterSet=Unicode
 ```
 
 ## Running 
-Main function calls one of this functions `testByTimings();`	or `testForVSProfiler();`.
+Main function calls one of this functions `testByTimings();` or `testForVSProfiler();`.
 
-First just run tests calls and check cpu ticks. 
+First function just run tests calls and check cpu ticks. 
 
-Second can be used to run with MS Visual Studio profiler. 
+Second function can be used to run with MS Visual Studio profiler. 
 
 ## Results 
 ```
-ticks in test1_setStrByValue         = 909
-ticks in test2_setStrByValueWithMove = 607
-ticks in test3_setStrByReference     = 141
-ticks in test4_setStrByRValue        = 952
-ticks in test5_setStrByRValueWithMove= 563
+ticks in test1_setStrByValue            = 780
+ticks in test2_setStrByValueWithMove    = 735
+ticks in test3_setStrByReference        = 110
+ticks in test4_setStrByRValue           = 827
+ticks in test5_setStrByRValueWithMove   = 752
+ticks in test6_setStrByReferenceWithMove= 111
+ticks in test7_setStrByPointerPtr       = 109
+ticks in test8_setStrBySharedPtr        = 294
 ```
-It looks like that a pass by reference is a fastest way. 
+It looks like that `pass by reference` and `by pointer` is a fastest way. 
 
-This numbers cannot be used to determine how fast but only to compare which way is relatively faster.
+Also using `std::move(_str)` can make pass by value a bit faster but nowhere fast as reference. 
+
+This numbers cannot be used to determine how fast but only to compare which way is relatively faster. 
+
+Also this is synthetic and no way to say what amount of speedup can real code get. 

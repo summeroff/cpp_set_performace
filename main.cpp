@@ -42,6 +42,11 @@ public:
 		stra = _str;
 		counter++;
 	}
+	void setStrByReferenceWithMove(const std::string& _str)
+	{
+		stra = std::move(_str);
+		counter++;
+	}
 	void setStrByRValue(std::string&& _str)
 	{
 		stra = _str;
@@ -50,6 +55,16 @@ public:
 	void setStrByRValueWithMove(std::string&& _str)
 	{
 		stra = std::move(_str);
+		counter++;
+	}
+	void setStrByPointer(const std::string* _str_ptr)
+	{
+		stra = *_str_ptr;
+		counter++;
+	}
+	void setStrBySharedPtr(const std::shared_ptr<std::string> _str_ptr)
+	{
+		stra = *_str_ptr;
 		counter++;
 	}
 
@@ -136,6 +151,37 @@ inline void test5_setStrByRValueWithMove(myClass & myObj)
 	}
 }
 
+inline void test6_setStrByReferenceWithMove(myClass & myObj)
+{
+	for (int i = 0; i < set_repeats; i++)
+	{
+		myObj.beforeSet();
+		myObj.setStrByReferenceWithMove(test_str);
+		myObj.afterSet();
+	}
+}
+
+inline void test7_setStrByPointerPtr(myClass & myObj)
+{
+	for (int i = 0; i < set_repeats; i++)
+	{
+		myObj.beforeSet();
+		myObj.setStrByPointer(&test_str);
+		myObj.afterSet();
+	}
+}
+
+inline void test8_setStrBySharedPtr(myClass & myObj)
+{
+	auto ptr = std::make_shared<std::string>(test_str);
+	for (int i = 0; i < set_repeats; i++)
+	{
+		myObj.beforeSet();
+		myObj.setStrBySharedPtr(ptr);
+		myObj.afterSet();
+	}
+}
+
 void testForVSProfiler()
 {
 	myClass myObj;
@@ -146,8 +192,11 @@ void testForVSProfiler()
 		test2_setStrByValueWithMove(myObj);
 		test4_setStrByRValue(myObj);
 		test5_setStrByRValueWithMove(myObj);
+		test6_setStrByReferenceWithMove(myObj);
+		test7_setStrByPointerPtr(myObj);
+		test8_setStrBySharedPtr(myObj);
 	}
-	
+
 	std::cout << "final counter = " << myObj.getCounter() << std::endl;
 }
 
@@ -162,6 +211,9 @@ void testByTimings()
 	int test3_ticks = 0;
 	int test4_ticks = 0;
 	int test5_ticks = 0;
+	int test6_ticks = 0;
+	int test7_ticks = 0;
+	int test8_ticks = 0;
 
 	for (int i = 0; i < tests_repeats; i++)
 	{
@@ -189,14 +241,32 @@ void testByTimings()
 		test5_setStrByRValueWithMove(myObj);
 		ticksend = GetTickCount();
 		test5_ticks += ticksend - ticksstart;
+
+		ticksstart = GetTickCount();
+		test6_setStrByReferenceWithMove(myObj);
+		ticksend = GetTickCount();
+		test6_ticks += ticksend - ticksstart;
+
+		ticksstart = GetTickCount();
+		test7_setStrByPointerPtr(myObj);
+		ticksend = GetTickCount();
+		test7_ticks += ticksend - ticksstart;
+
+		ticksstart = GetTickCount();
+		test8_setStrBySharedPtr(myObj);
+		ticksend = GetTickCount();
+		test8_ticks += ticksend - ticksstart;
 	}
 
-	std::cout << "ticks in test1_setStrByValue         = " << test1_ticks << std::endl;
-	std::cout << "ticks in test2_setStrByValueWithMove = " << test2_ticks << std::endl;
-	std::cout << "ticks in test3_setStrByReference     = " << test3_ticks << std::endl;
-	std::cout << "ticks in test4_setStrByRValue        = " << test4_ticks << std::endl;
-	std::cout << "ticks in test5_setStrByRValueWithMove= " << test5_ticks << std::endl;
-	
+	std::cout << "ticks in test1_setStrByValue            = " << test1_ticks << std::endl;
+	std::cout << "ticks in test2_setStrByValueWithMove    = " << test2_ticks << std::endl;
+	std::cout << "ticks in test3_setStrByReference        = " << test3_ticks << std::endl;
+	std::cout << "ticks in test4_setStrByRValue           = " << test4_ticks << std::endl;
+	std::cout << "ticks in test5_setStrByRValueWithMove   = " << test5_ticks << std::endl;
+	std::cout << "ticks in test6_setStrByReferenceWithMove= " << test6_ticks << std::endl;
+	std::cout << "ticks in test7_setStrByPointerPtr       = " << test7_ticks << std::endl;
+	std::cout << "ticks in test8_setStrBySharedPtr        = " << test8_ticks << std::endl;
+
 	std::cout << "final counter = " << myObj.getCounter() << std::endl;
 }
 
