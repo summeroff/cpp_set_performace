@@ -20,18 +20,19 @@ Second function can be used to run with MS Visual Studio profiler.
 
 ## Results 
 ```
-ticks in test1_setStrByValue            = 780
-ticks in test2_setStrByValueWithMove    = 735
-ticks in test3_setStrByReference        = 110
-ticks in test4_setStrByRValue           = 827
-ticks in test5_setStrByRValueWithMove   = 752
-ticks in test6_setStrByReferenceWithMove= 111
-ticks in test7_setStrByPointerPtr       = 109
-ticks in test8_setStrBySharedPtr        = 294
+tests_repeats=5, set_repeats=10000000
+ticks in              test1_setStrByValue =  4062, zeroes =   0 , max   828
+ticks in      test2_setStrByValueWithMove =  3408, zeroes =   0 , max   688
+ticks in          test3_setStrByReference =   578, zeroes =   0 , max   125
+ticks in             test4_setStrByRValue =  4078, zeroes =   0 , max   828
+ticks in     test5_setStrByRValueWithMove =  3484, zeroes =   0 , max   703
+ticks in  test6_setStrByReferenceWithMove =   593, zeroes =   0 , max   125
+ticks in         test7_setStrByPointerPtr =   578, zeroes =   0 , max   125
+ticks in          test8_setStrBySharedPtr =  1094, zeroes =   0 , max   250
 ```
 It looks like that `pass by reference` and `by pointer` is a fastest way. 
 
-Also using `std::move(_str)` can make pass by value a bit faster but nowhere fast as reference. 
+Also using `std::move(_str)` can make pass by value a bit faster but nowhere as fast as pass by reference. 
 
 This numbers cannot be used to determine how fast but only to compare which way is relatively faster. 
 
