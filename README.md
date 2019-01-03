@@ -1,4 +1,4 @@
-# cpp_set_performace
+# cpp_set_performance
 Check how fast different types of passing values to a set function
 
 Five different ways to pass value to a set function. Which use combination of `(std::string _str)`, `(const std::string& _str)`, `std::move(_str)` and  `(const std::string&& _str)`.
